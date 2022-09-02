@@ -1,2 +1,2 @@
 # implementations
-different things implemented in c
+collections of concepts implemented in c 
