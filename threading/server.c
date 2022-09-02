@@ -10,13 +10,17 @@
 #define MAX_CONNECTION 5
 
 
+
+
+
+
 char buffer[1024];
 
 
-
-void* handle_client(void *client_sock_arg){
+void* recv_client(void *client_sock_arg){
 
     int client_sock = *((int *)client_sock_arg);
+
     while(1){
         sleep(100);
     }
@@ -78,14 +82,21 @@ int main(){
 
         printf("[+] new client connected.\n");
 
-        pthread_t client_thread;
+        pthread_t recv_client;
 
         int *pclient = malloc(sizeof(int));
         *pclient = client_sock;
 
-        pthread_create(&client_thread,NULL,&handle_client,pclient);
-        
+        pthread_create(&recv_client,NULL,&recv_client,pclient);        
 
+        /* 
+            -store all client in an array of max connections length
+            -then handle all recv operations in recv thread.
+            -store all incoming messages from each client to a queue.
+            -send whenever the queue has elements in it using sperate thread 
+                for handling brodcast 
+            -handle race conditions
+        */
     }
 
     return 0;
