@@ -10,6 +10,9 @@
 #define MAX_CONNECTION 5
 
 
+struct queue{
+    
+}
 
 
 
@@ -17,7 +20,9 @@
 char buffer[1024];
 
 
-void* recv_client(void *client_sock_arg){
+void* send_msg();
+
+void* recv_msg(void *client_sock_arg){
 
     int client_sock = *((int *)client_sock_arg);
 
@@ -82,12 +87,13 @@ int main(){
 
         printf("[+] new client connected.\n");
 
-        pthread_t recv_client;
+        pthread_t recv_msg_thread,send_msg_thread;
 
         int *pclient = malloc(sizeof(int));
         *pclient = client_sock;
 
-        pthread_create(&recv_client,NULL,&recv_client,pclient);        
+        pthread_create(&recv_msg_thread,NULL,&recv_msg,pclient);    
+        pthread_create(&send_msg_thread,NULL,&send_msg,NULL);    
 
         /* 
             -store all client in an array of max connections length
